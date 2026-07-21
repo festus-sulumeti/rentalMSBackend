@@ -17,7 +17,7 @@ This project is the initial backend for a Rental Management System API.
    python -m venv .venv
 
    ```
-   
+
    ```bash
    source .venv/bin/activate
    ```
@@ -25,6 +25,8 @@ This project is the initial backend for a Rental Management System API.
    ```bash
    pip install flask
    ```
+## Creation of the .env file
+Create a .env file for security credentials of your files
 
 ## Running the App
 Run the application with:
