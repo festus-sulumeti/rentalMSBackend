@@ -5,6 +5,9 @@ from alembic import context
 from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 
+from extensions import db
+from models import User
+
 # Load environment variables from the .env file
 load_dotenv()
 
@@ -36,7 +39,7 @@ if config.config_file_name is not None:
 # from app import db
 # target_metadata = db.metadata
 
-target_metadata = None
+target_metadata = db.metadata
 
 
 def run_migrations_offline() -> None:
