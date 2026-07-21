@@ -60,6 +60,87 @@ ADMIN_PASSWORD=admin
 
 > **Note:** The `.env` file contains sensitive information and should never be committed to version control. Ensure it is included in your `.gitignore` file.
 
+
+## Database Migrations (Alembic)
+
+This project uses **Alembic** to manage database schema migrations.
+
+### Initial Alembic Setup
+
+If the `alembic/` directory or Alembic configuration files have been deleted or are not yet initialized, follow these steps:
+
+1. Install Alembic:
+
+   ```bash
+   pip install alembic
+   ```
+
+2. Initialize Alembic:
+
+   ```bash
+   alembic init alembic
+   ```
+
+3. Generate a new migration after creating or updating your SQLAlchemy models:
+
+   ```bash
+   alembic revision --autogenerate -m "description_of_migration"
+   ```
+
+4. Apply the migration to the database:
+
+   ```bash
+   alembic upgrade head
+   ```
+
+### Creating New Migrations
+
+If Alembic has already been initialized and the `alembic/` directory exists, you only need to generate and apply new migrations whenever your models change.
+
+1. Generate a migration:
+
+   ```bash
+   alembic revision --autogenerate -m "description_of_migration"
+   ```
+
+2. Apply the migration:
+
+   ```bash
+   alembic upgrade head
+   ```
+
+### Viewing Migration History
+
+Display the migration history:
+
+```bash
+alembic history
+```
+
+Display the current migration version applied to the database:
+
+```bash
+alembic current
+```
+
+Upgrade the database to the latest migration:
+
+```bash
+alembic upgrade head
+```
+
+Downgrade the database by one migration:
+
+```bash
+alembic downgrade -1
+```
+
+Downgrade the database to a specific revision:
+
+```bash
+alembic downgrade <revision_id>
+```
+
 ## Running the Application
 
 Start the Flask development server:
