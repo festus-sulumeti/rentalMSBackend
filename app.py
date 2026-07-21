@@ -3,10 +3,28 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 
-# Load environment variables from the .env file
+from extensions import db
+
+# Load environment variables
 load_dotenv(dotenv_path=".env")
 
 app = Flask(__name__)
+
+# -----------------------------
+# Database Configuration
+# -----------------------------
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    f"postgresql://{os.getenv('DB_USER')}:"
+    f"{os.getenv('DB_PASSWORD')}@"
+    f"{os.getenv('DB_HOST')}:"
+    f"{os.getenv('DB_PORT')}/"
+    f"{os.getenv('DB_NAME')}"
+)
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# Initialize SQLAlchemy
+db.init_app(app)
 
 
 @app.route("/")
@@ -33,12 +51,6 @@ def login():
     admin_email = os.getenv("ADMIN_EMAIL")
     admin_password = os.getenv("ADMIN_PASSWORD")
 
-    # Debug (remove these in production)
-    print(f"Expected Email: {admin_email}")
-    print(f"Expected Password: {admin_password}")
-    print(f"Received Email: {email}")
-    print(f"Received Password: {password}")
-
     if email == admin_email and password == admin_password:
         return jsonify({
             "status": "success",
@@ -61,4 +73,7 @@ def dashboard():
 
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()  # Creates tables if they don't already exist
+
     app.run(debug=True)
