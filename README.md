@@ -55,7 +55,7 @@ Create a `.env` file in the project root directory and add the following variabl
 
 ```env
 ADMIN_EMAIL=AdminMail
-ADMIN_PASSWORD=Adminpaascode
+ADMIN_PASSWORD=Adminpasscode
 ```
 
 > **Note:** The `.env` file contains sensitive information and should never be committed to version control. Ensure it is included in your `.gitignore` file.
