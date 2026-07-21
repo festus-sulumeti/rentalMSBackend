@@ -19,7 +19,9 @@ This project is the initial backend for a Rental Management System API.
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/festus-sulumeti/rentalMSBackend.git
+   ```
+   ```bash
    cd rentalMSBackend
    ```
 
