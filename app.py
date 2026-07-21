@@ -3,12 +3,10 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 
-load_dotenv()
+# Load environment variables from the .env file
+load_dotenv(dotenv_path=".env")
 
 app = Flask(__name__)
-
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 
 
 @app.route("/")
@@ -32,7 +30,16 @@ def login():
     email = data.get("email")
     password = data.get("password")
 
-    if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
+    admin_email = os.getenv("ADMIN_EMAIL")
+    admin_password = os.getenv("ADMIN_PASSWORD")
+
+    # Debug (remove these in production)
+    print(f"Expected Email: {admin_email}")
+    print(f"Expected Password: {admin_password}")
+    print(f"Received Email: {email}")
+    print(f"Received Password: {password}")
+
+    if email == admin_email and password == admin_password:
         return jsonify({
             "status": "success",
             "message": "Login successful.",
