@@ -54,8 +54,8 @@ This project is the initial backend for a Rental Management System API.
 Create a `.env` file in the project root directory and add the following variables:
 
 ```env
-ADMIN_EMAIL=admin@gmail.com
-ADMIN_PASSWORD=admin
+ADMIN_EMAIL=AdminMail
+ADMIN_PASSWORD=Adminpaascode
 ```
 
 > **Note:** The `.env` file contains sensitive information and should never be committed to version control. Ensure it is included in your `.gitignore` file.
