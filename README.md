@@ -15,6 +15,10 @@ This project is the initial backend for a Rental Management System API.
 1. Create and activate a virtual environment:
    ```bash
    python -m venv .venv
+
+   ```
+   
+   ```bash
    source .venv/bin/activate
    ```
 2. Install dependencies:
