@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from extensions import db, bcrypt
+from extensions import bcrypt, db
 
 
 class User(db.Model):
@@ -48,12 +48,10 @@ class User(db.Model):
         default=datetime.utcnow
     )
 
-
     def set_password(self, password):
         self.password_hash = bcrypt.generate_password_hash(
             password
         ).decode("utf-8")
-
 
     def check_password(self, password):
         return bcrypt.check_password_hash(
@@ -61,18 +59,17 @@ class User(db.Model):
             password
         )
 
-
-   def to_dict(self):
-    return {
-        "id": self.id,
-        "first_name": self.first_name,
-        "last_name": self.last_name,
-        "email": self.email,
-        "role": self.role,
-        "is_active": self.is_active,
-        "created_at": (
-            self.created_at.isoformat()
-            if self.created_at
-            else None
-        )
-    }
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "email": self.email,
+            "role": self.role,
+            "is_active": self.is_active,
+            "created_at": (
+                self.created_at.isoformat()
+                if self.created_at
+                else None
+            )
+        }
