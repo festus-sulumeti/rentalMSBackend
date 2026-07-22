@@ -3,6 +3,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from extensions import db
 from models.property import Property
+from utils.permissions import admin_required
 
 
 properties_bp = Blueprint(
@@ -14,18 +15,25 @@ properties_bp = Blueprint(
 
 @properties_bp.route("/", methods=["POST"])
 @jwt_required()
+@admin_required
 def create_property():
 
     owner_id = get_jwt_identity()
 
     data = request.get_json()
 
+    if not data:
+        return jsonify({
+            "status": "error",
+            "message": "Request body required"
+        }), 400
+
     required_fields = [
         "name",
         "address",
         "city",
         "county",
-        "property_type",
+        "property_type"
     ]
 
     for field in required_fields:
@@ -51,6 +59,7 @@ def create_property():
 
     return jsonify({
         "status": "success",
+        "message": "Property created successfully",
         "property": property.to_dict()
     }), 201
 
@@ -67,7 +76,7 @@ def get_properties():
             property.to_dict()
             for property in properties
         ]
-    })
+    }), 200
 
 
 @properties_bp.route("/<int:id>", methods=["GET"])
@@ -79,47 +88,45 @@ def get_property(id):
     return jsonify({
         "status": "success",
         "property": property.to_dict()
-    })
+    }), 200
 
 
 @properties_bp.route("/<int:id>", methods=["PUT"])
 @jwt_required()
+@admin_required
 def update_property(id):
 
     property = Property.query.get_or_404(id)
 
     data = request.get_json()
 
-    property.name = data.get(
-        "name",
-        property.name
-    )
+    if not data:
+        return jsonify({
+            "status": "error",
+            "message": "Request body required"
+        }), 400
 
+    property.name = data.get("name", property.name)
     property.description = data.get(
         "description",
         property.description
     )
-
     property.address = data.get(
         "address",
         property.address
     )
-
     property.city = data.get(
         "city",
         property.city
     )
-
     property.county = data.get(
         "county",
         property.county
     )
-
     property.property_type = data.get(
         "property_type",
         property.property_type
     )
-
     property.total_units = data.get(
         "total_units",
         property.total_units
@@ -129,21 +136,22 @@ def update_property(id):
 
     return jsonify({
         "status": "success",
+        "message": "Property updated successfully",
         "property": property.to_dict()
-    })
+    }), 200
 
 
 @properties_bp.route("/<int:id>", methods=["DELETE"])
 @jwt_required()
+@admin_required
 def delete_property(id):
 
     property = Property.query.get_or_404(id)
 
     db.session.delete(property)
-
     db.session.commit()
 
     return jsonify({
         "status": "success",
         "message": "Property deleted successfully"
-    })
+    }), 200
