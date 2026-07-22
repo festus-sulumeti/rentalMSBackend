@@ -10,15 +10,19 @@ def admin_required(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
 
-        user = User.query.get(get_jwt_identity())
+        user_id = int(get_jwt_identity())
 
-        if not user:
+        user = User.query.get(user_id)
+
+        if user is None:
             return jsonify({
+                "status": "error",
                 "message": "User not found"
             }), 404
 
         if user.role != "admin":
             return jsonify({
+                "status": "error",
                 "message": "Administrator access required"
             }), 403
 
