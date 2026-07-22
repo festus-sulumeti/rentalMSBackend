@@ -1,5 +1,7 @@
-"""
-Routes package for Rental Management System API.
+from .auth import auth_bp
+from .properties import properties_bp
 
-All application route blueprints are organized here.
-"""
+__all__ = [
+    "auth_bp",
+    "properties_bp",
+]
