@@ -1,10 +1,7 @@
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from extensions import db
 from models.property import Property
-from utils.permissions import admin_required
-
 
 properties_bp = Blueprint(
     "properties",
@@ -14,11 +11,7 @@ properties_bp = Blueprint(
 
 
 @properties_bp.route("/", methods=["POST"])
-@jwt_required()
-@admin_required
 def create_property():
-
-    owner_id = get_jwt_identity()
 
     data = request.get_json()
 
@@ -43,6 +36,9 @@ def create_property():
                 "message": f"{field} is required"
             }), 400
 
+    # Temporary owner for development
+    owner_id = 3
+
     property = Property(
         name=data["name"],
         description=data.get("description"),
@@ -65,7 +61,6 @@ def create_property():
 
 
 @properties_bp.route("/", methods=["GET"])
-@jwt_required()
 def get_properties():
 
     properties = Property.query.all()
@@ -80,7 +75,6 @@ def get_properties():
 
 
 @properties_bp.route("/<int:id>", methods=["GET"])
-@jwt_required()
 def get_property(id):
 
     property = Property.query.get_or_404(id)
@@ -92,8 +86,6 @@ def get_property(id):
 
 
 @properties_bp.route("/<int:id>", methods=["PUT"])
-@jwt_required()
-@admin_required
 def update_property(id):
 
     property = Property.query.get_or_404(id)
@@ -142,8 +134,6 @@ def update_property(id):
 
 
 @properties_bp.route("/<int:id>", methods=["DELETE"])
-@jwt_required()
-@admin_required
 def delete_property(id):
 
     property = Property.query.get_or_404(id)
