@@ -83,4 +83,6 @@ class Property(db.Model):
             "is_active": self.is_active,
             "owner_id": self.owner_id,
             "created_at": self.created_at.isoformat()
+            if self.created_at
+            else None,
         }
