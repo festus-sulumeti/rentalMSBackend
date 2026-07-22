@@ -62,13 +62,17 @@ class User(db.Model):
         )
 
 
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "first_name": self.first_name,
-            "last_name": self.last_name,
-            "email": self.email,
-            "role": self.role,
-            "is_active": self.is_active,
-            "created_at": self.created_at.isoformat()
-        }
+   def to_dict(self):
+    return {
+        "id": self.id,
+        "first_name": self.first_name,
+        "last_name": self.last_name,
+        "email": self.email,
+        "role": self.role,
+        "is_active": self.is_active,
+        "created_at": (
+            self.created_at.isoformat()
+            if self.created_at
+            else None
+        )
+    }
