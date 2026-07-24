@@ -6,3 +6,9 @@
 .vscode/
 
 Look.md
+
+__pycache__/
+*.py[cod]
+instance/
+uploads/*
+!uploads/.gitkeep
