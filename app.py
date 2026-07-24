@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 from flask import Flask, jsonify, request
 from extensions import bcrypt, db, jwt
 from routes import register_blueprints
@@ -17,7 +19,14 @@ def create_app(config_object=None):
     def add_cors_headers(response):
         """Allow configured browser clients to call the JSON API."""
         origin = request.headers.get("Origin")
-        if origin and origin in app.config["CORS_ORIGINS"]:
+        parsed_origin = urlparse(origin) if origin else None
+        is_localhost = (
+            app.config["CORS_ALLOW_LOCALHOST"]
+            and parsed_origin is not None
+            and parsed_origin.scheme in {"http", "https"}
+            and parsed_origin.hostname in {"localhost", "127.0.0.1", "::1"}
+        )
+        if origin and (origin in app.config["CORS_ORIGINS"] or is_localhost):
             response.headers["Access-Control-Allow-Origin"] = origin
             response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, PATCH, DELETE, OPTIONS"
             response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type"

@@ -58,6 +58,7 @@ ADMIN_PASSWORD=Adminpasscode
 DATABASE_URL=postgresql://user:password@localhost:5432/rentalms
 JWT_SECRET_KEY=replace-with-a-long-random-secret
 CORS_ORIGINS=http://localhost:5174,http://127.0.0.1:5174
+CORS_ALLOW_LOCALHOST=true
 ```
 
 > **Note:** The `.env` file contains sensitive information and should never be committed to version control. Ensure it is included in your `.gitignore` file.
@@ -173,6 +174,8 @@ http://127.0.0.1:5000/
 | GET | `/dashboard/` | Property dashboard summary |
 
 All routes except `/` and the signup/login endpoints require `Authorization: Bearer <access_token>`.
+
+For development, `CORS_ALLOW_LOCALHOST=true` accepts any `localhost` or `127.0.0.1` port, so Vite can use an available port automatically. Set it to `false` in production and specify the production URL in `CORS_ORIGINS`.
 
 ## Testing the API
 

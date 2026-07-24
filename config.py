@@ -30,3 +30,4 @@ class Config:
         ).split(",")
         if origin.strip()
     )
+    CORS_ALLOW_LOCALHOST = os.getenv("CORS_ALLOW_LOCALHOST", "true").lower() == "true"
