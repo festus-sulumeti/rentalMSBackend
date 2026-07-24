@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from extensions import bcrypt, db, jwt
 from routes import register_blueprints
 from services.auth_service import create_default_admin
@@ -12,6 +12,17 @@ def create_app(config_object=None):
     bcrypt.init_app(app)
     jwt.init_app(app)
     register_blueprints(app)
+
+    @app.after_request
+    def add_cors_headers(response):
+        """Allow configured browser clients to call the JSON API."""
+        origin = request.headers.get("Origin")
+        if origin and origin in app.config["CORS_ORIGINS"]:
+            response.headers["Access-Control-Allow-Origin"] = origin
+            response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+            response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type"
+            response.headers["Vary"] = "Origin"
+        return response
 
     @app.route("/")
     def welcome():

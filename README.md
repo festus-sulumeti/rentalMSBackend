@@ -57,6 +57,7 @@ ADMIN_EMAIL=AdminMail
 ADMIN_PASSWORD=Adminpasscode
 DATABASE_URL=postgresql://user:password@localhost:5432/rentalms
 JWT_SECRET_KEY=replace-with-a-long-random-secret
+CORS_ORIGINS=http://localhost:5174,http://127.0.0.1:5174
 ```
 
 > **Note:** The `.env` file contains sensitive information and should never be committed to version control. Ensure it is included in your `.gitignore` file.

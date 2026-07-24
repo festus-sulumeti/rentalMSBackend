@@ -22,3 +22,11 @@ class Config:
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "change-this-development-secret")
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=int(os.getenv("JWT_ACCESS_TOKEN_HOURS", "24")))
     DEBUG = os.getenv("FLASK_DEBUG", "false").lower() == "true"
+    CORS_ORIGINS = tuple(
+        origin.strip()
+        for origin in os.getenv(
+            "CORS_ORIGINS",
+            "http://localhost:5174,http://127.0.0.1:5174",
+        ).split(",")
+        if origin.strip()
+    )
