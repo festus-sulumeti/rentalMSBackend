@@ -1,34 +1,16 @@
-import os
 from logging.config import fileConfig
 
 from alembic import context
-from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 
 from extensions import db
-from models import User
-
-# Load environment variables from the .env file
-load_dotenv()
+import models  # noqa: F401 - loads every model into SQLAlchemy metadata
+from config import database_uri
 
 # Alembic Config object
 config = context.config
 
-# Read database credentials from .env
-db_user = os.getenv("DB_USER")
-db_password = os.getenv("DB_PASSWORD")
-db_host = os.getenv("DB_HOST")
-db_port = os.getenv("DB_PORT")
-db_name = os.getenv("DB_NAME")
-
-# Build the PostgreSQL connection URL
-database_url = (
-    f"postgresql://{db_user}:{db_password}"
-    f"@{db_host}:{db_port}/{db_name}"
-)
-
-# Override sqlalchemy.url from alembic.ini
-config.set_main_option("sqlalchemy.url", database_url)
+config.set_main_option("sqlalchemy.url", database_uri())
 
 # Configure logging
 if config.config_file_name is not None:
