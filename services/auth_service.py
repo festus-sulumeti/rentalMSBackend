@@ -1,4 +1,5 @@
 import os
+from sqlalchemy import inspect
 
 from extensions import db
 from models.user import User
@@ -14,7 +15,9 @@ def create_default_admin():
     admin_password = os.getenv("ADMIN_PASSWORD")
 
     if not admin_email or not admin_password:
-        print("Default admin credentials not configured.")
+        return
+
+    if "users" not in inspect(db.engine).get_table_names():
         return
 
     admin = User.query.filter_by(
@@ -22,7 +25,6 @@ def create_default_admin():
     ).first()
 
     if admin:
-        print("Default admin already exists.")
         return
 
     admin = User(
@@ -36,5 +38,3 @@ def create_default_admin():
 
     db.session.add(admin)
     db.session.commit()
-
-    print("Default administrator created successfully.")
