@@ -1,13 +1,12 @@
 # Rental Management System Backend
 
-This project is the initial backend for a Rental Management System API.
+Flask REST API for managing rental properties, units, tenants, leases, payments, expenses, maintenance, invoices, and notifications.
 
 ## Features
 
-- Welcome route for the API
-- Admin login using environment variables
-- Flask-based backend structure
-- Ready for future rental management endpoints
+- JWT authentication with role-aware access control
+- Property, unit, lease, payment, expense, maintenance, invoice, notification, user, and dashboard endpoints
+- Alembic migrations for the full rental-domain schema
 
 ## Requirements
 
@@ -56,6 +55,8 @@ Create a `.env` file in the project root directory and add the following variabl
 ```env
 ADMIN_EMAIL=AdminMail
 ADMIN_PASSWORD=Adminpasscode
+DATABASE_URL=postgresql://user:password@localhost:5432/rentalms
+JWT_SECRET_KEY=replace-with-a-long-random-secret
 ```
 
 > **Note:** The `.env` file contains sensitive information and should never be committed to version control. Ensure it is included in your `.gitignore` file.
@@ -160,8 +161,17 @@ http://127.0.0.1:5000/
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/` | Welcome endpoint |
-| POST | `/login` | Admin login |
-| GET | `/dashboard` | Admin dashboard |
+| POST | `/auth/signup` | Register a user |
+| POST | `/auth/login` | Log in and receive an access token |
+| GET | `/auth/me` | Current user |
+| CRUD | `/properties/` | Properties (authenticated owner/admin) |
+| GET/POST/PUT | `/units/` | Rental units |
+| GET/POST/PUT | `/leases/` | Leases |
+| GET/POST | `/payments/`, `/expenses/`, `/invoices/` | Financial records |
+| GET/POST/PATCH | `/maintenance/`, `/notifications/` | Operations and alerts |
+| GET | `/dashboard/` | Property dashboard summary |
+
+All routes except `/` and the signup/login endpoints require `Authorization: Bearer <access_token>`.
 
 ## Testing the API
 
@@ -174,7 +184,7 @@ curl http://127.0.0.1:5000/
 ### Admin Login
 
 ```bash
-curl -X POST http://127.0.0.1:5000/login \
+curl -X POST http://127.0.0.1:5000/auth/login \
 -H "Content-Type: application/json" \
 -d '{
   "email": "admin@gmail.com",
